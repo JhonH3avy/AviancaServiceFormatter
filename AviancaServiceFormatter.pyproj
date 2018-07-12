@@ -4,12 +4,12 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>pyvot_app.py</StartupFile>
+    <StartupFile>service_formatter.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <InterpreterId>Global|PythonCore|2.7-32</InterpreterId>
+    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,16 +20,25 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="pyvot_app.py" />
+    <Compile Include="Service.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="services_to_excel.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="service_formatter.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="6 JULIO 02 AM.xlsx" />
     <Content Include="requirements.txt" />
     <Content Include="pyvot_sample.xlsx">
       <Publish>True</Publish>
     </Content>
+    <Content Include="SILLA DE RUEDAS.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|2.7-32" />
+    <InterpreterReference Include="Global|PythonCore|3.6" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
