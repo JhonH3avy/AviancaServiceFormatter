@@ -6,10 +6,26 @@ from os import path
 from openpyxl import load_workbook
 from Service import Service
 import services_to_excel
+import sys
+
 
 def main():
     """Loads and modifies a sample spreadsheet in Excel."""
-    workbook_path = path.join(path.dirname(__file__), 'SILLA DE RUEDAS.xlsx')
+    flags = {}
+    flag = None
+    for arg in sys.argv:
+        if '-' in arg:
+            flag = arg
+        else:
+            if flag:
+                flags[flag] = arg
+                flag = None
+
+    
+    if flags['-p']:
+        workbook_path = flags['-p']
+    else:
+        workbook_path = path.join(path.dirname(__file__), 'service_data.xlsx')
     workbook = load_workbook(workbook_path, read_only=True)
 
     sheet_names = workbook.sheetnames
@@ -62,7 +78,8 @@ def process_sheet(sheet, workbook):
             else:
                 services.append(service)
                 
-    services_to_excel.convert_to_excel(services)
+    normalized_excel = services_to_excel.convert_to_excel(services)
+    normalized_excel.save('services.xlsx')
 
 
 def is_valid_sheet_name(sheetName):

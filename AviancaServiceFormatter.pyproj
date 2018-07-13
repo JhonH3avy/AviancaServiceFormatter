@@ -10,6 +10,9 @@
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <InterpreterId>Global|PythonCore|3.6</InterpreterId>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>-p "C:\Users\JhonRContreras\source\repos\AviancaServiceFormatter\AviancaServiceFormatter\6 JULIO 02 AM.xlsx"</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
