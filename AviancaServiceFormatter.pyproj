@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <InterpreterId>Global|PythonCore|3.6</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-p "C:\Users\JhonRContreras\source\repos\AviancaServiceFormatter\AviancaServiceFormatter\6 JULIO 02 AM.xlsx"</CommandLineArguments>
+    <CommandLineArguments>-p "C:\Users\JhonRContreras\source\repos\AviancaServiceFormatter\AviancaServiceFormatter\SILLA DE RUEDAS.xlsx"</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -37,6 +37,7 @@
     <Content Include="pyvot_sample.xlsx">
       <Publish>True</Publish>
     </Content>
+    <Content Include="services.xlsx" />
     <Content Include="SILLA DE RUEDAS.xlsx" />
   </ItemGroup>
   <ItemGroup>

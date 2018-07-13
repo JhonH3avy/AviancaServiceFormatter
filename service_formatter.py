@@ -8,6 +8,10 @@ from Service import Service
 import services_to_excel
 import sys
 
+OK = 0
+FILE_LOADING_ERROR = 1
+FILE_FORMAT_ERROR = 2
+FILE_ACCESS_PERMISSION_ERROR = 3
 
 def main():
     """Loads and modifies a sample spreadsheet in Excel."""
@@ -24,27 +28,57 @@ def main():
     
     if flags['-p']:
         workbook_path = flags['-p']
+        print('Using custom path')
     else:
         workbook_path = path.join(path.dirname(__file__), 'service_data.xlsx')
-    workbook = load_workbook(workbook_path, read_only=True)
+    try:
+        workbook = load_workbook(workbook_path, read_only=True)
+        print('The file has been loaded successfully')
+    except FileNotFoundError:
+        print('The file has not been found in ' + workbook_path);
+        sys.exit(FILE_LOADING_ERROR)
+    except FileExistsError:
+        print('The file ' + workbook_path + ' doesn\'t exist')
+        sys.exit(FILE_LOADING_ERROR)
+
 
     sheet_names = workbook.sheetnames
-
+    servicesToParse = None
     for sheet in sheet_names:
-        process_sheet(sheet, workbook)
-    
+        print('Getting services of sheet ' + sheet)
+        servicesToParse = process_sheet(sheet, workbook, servicesToParse)
+
+    print(str(len(servicesToParse)) + ' services has been created from file ' + workbook_path)
+    normalized_excel = services_to_excel.convert_to_excel(servicesToParse)
+
+    resultFileName = 'services.xlsx'
+    try:
+        normalized_excel.save(resultFileName)
+        print('Excel file created successfully')
+    except PermissionError:
+        print('Program do not have permission to access ' + path.dirname(__file__) + resultFileName)
+        sys.exit(FILE_ACCESS_PERMISSION_ERROR)
+    print('Job Done...')
+    sys.exit(OK)    
 
 
-services = []
-def process_sheet(sheet, workbook):   
 
+def process_sheet(sheet, workbook, services = []):   
+    if services is None:
+        services = []
     if not is_valid_sheet_name(sheet):
-        return
+        print(sheet + ' is not a valid sheet name.')
+        return services
 
     sheet_ranges = workbook[sheet]    
 
-    local = sheet_ranges['A5'].value
-    localData = local.split(':')
+    try:
+        assert sheet_ranges['A5'].value is not None
+        local = sheet_ranges['A5'].value
+        localData = local.split(':')
+    except AssertionError:
+        print('File is not in correct format. Cell "A5" has no destination nor origin information')
+        sys.exit(FILE_FORMAT_ERROR)
 
     origin = ''
     destination = ''
@@ -77,13 +111,14 @@ def process_sheet(sheet, workbook):
                 services.append(service_with_connection)
             else:
                 services.append(service)
-                
-    normalized_excel = services_to_excel.convert_to_excel(services)
-    normalized_excel.save('services.xlsx')
+        
+    print('Services for ' + sheet + ' has been processed')   
+    return services
+    
 
 
 def is_valid_sheet_name(sheetName):
-    keys = ['SALIDAS', 'LLEGADAS']
+    keys = ['SALIDAS', 'SALIENDO', 'LLEGADAS', 'LLEGANDO']
     for key in keys:
         if key in sheetName:
             return True
