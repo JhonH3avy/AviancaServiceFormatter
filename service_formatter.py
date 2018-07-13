@@ -26,7 +26,7 @@ def main():
                 flag = None
 
     
-    if flags['-p']:
+    if '-p' in flags:
         workbook_path = flags['-p']
         print('Using custom path')
     else:
