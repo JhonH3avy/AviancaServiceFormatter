@@ -29,6 +29,7 @@ class Service(object):
             self.startZone = 'GATE'
             self.endZone = 'SALIDA'
         self.paxName = fields[6].value
+        self.serviceType = None
         if fields[8].value:
             self.serviceType = 'WCOB'
         elif fields[9].value:
@@ -39,8 +40,11 @@ class Service(object):
             self.serviceType = 'WCHC'
         elif fields[11].value:
             self.serviceType = 'WCHR'
-        elif fields[13].value:
-            self.serviceType = 'WCBW'
+        try:
+            if self.serviceType is None and fields[13].value:
+                self.serviceType = 'WCBW'
+        except IndexError:
+            print('No WCBW Column for this service')
         self.flightConnectionNumber = ''
         self.paxReservationNumber = ''
         self.connectionGate = ''
