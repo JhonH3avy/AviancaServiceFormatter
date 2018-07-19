@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <InterpreterId>Global|PythonCore|3.6</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-p "C:\Users\JhonRContreras\source\repos\AviancaServiceFormatter\AviancaServiceFormatter\SILLA DE RUEDAS.xlsx"</CommandLineArguments>
+    <CommandLineArguments>-p "C:\Users\JhonRContreras\Documents\WCHR 19 JUL 10AM.xlsx" -o "C:\Users\JhonRContreras\Documents\services.xlsx"</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -32,13 +32,7 @@
     <Compile Include="service_formatter.py" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="6 JULIO 02 AM.xlsx" />
     <Content Include="requirements.txt" />
-    <Content Include="pyvot_sample.xlsx">
-      <Publish>True</Publish>
-    </Content>
-    <Content Include="services.xlsx" />
-    <Content Include="SILLA DE RUEDAS.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|2.7-32" />
