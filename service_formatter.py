@@ -31,6 +31,12 @@ def main():
         print('Using custom path')
     else:
         workbook_path = path.join(path.dirname(__file__), 'service_data.xlsx')
+
+    if '-o' in flags:
+        output_path = flags['-o']
+    else:
+        output_path = path.dirname(__file__) + 'services.xlsx'
+
     try:
         workbook = load_workbook(workbook_path, read_only=True)
         print('The file has been loaded successfully')
@@ -51,12 +57,11 @@ def main():
     print(str(len(servicesToParse)) + ' services has been created from file ' + workbook_path)
     normalized_excel = services_to_excel.convert_to_excel(servicesToParse)
 
-    resultFileName = 'services.xlsx'
     try:
-        normalized_excel.save(resultFileName)
+        normalized_excel.save(output_path)
         print('Excel file created successfully')
     except PermissionError:
-        print('Program do not have permission to access ' + path.dirname(__file__) + resultFileName)
+        print('Program do not have permission to access ' + output_path)
         sys.exit(FILE_ACCESS_PERMISSION_ERROR)
     print('Job Done...')
     sys.exit(OK)    
