@@ -20,21 +20,21 @@ def convert_to_excel(services = []):
     ws['N1'] = 'authorizedBy'
 
     total_services = len(services)
-    for i in range(2,total_services):
-        ws['A' + str(i)] = services[i].flightNumber
-        ws['B' + str(i)] = services[i].airline
-        ws['C' + str(i)] = services[i].origin
-        ws['D' + str(i)] = services[i].destination
-        ws['E' + str(i)] = services[i].startDate
-        ws['F' + str(i)] = services[i].flightConnectionNumber
-        ws['G' + str(i)] = services[i].paxName
-        ws['H' + str(i)] = services[i].paxReservationNumber
-        ws['I' + str(i)] = services[i].startZone
-        ws['J' + str(i)] = services[i].endZone
-        ws['K' + str(i)] = services[i].connectionGate
-        ws['L' + str(i)] = services[i].serviceType
-        ws['M' + str(i)] = services[i].reserved
-        ws['N' + str(i)] = services[i].authorizedBy
+    for i in range(0,total_services):
+        ws['A' + str(i+2)] = services[i].flightNumber
+        ws['B' + str(i+2)] = services[i].airline
+        ws['C' + str(i+2)] = services[i].origin
+        ws['D' + str(i+2)] = services[i].destination
+        ws['E' + str(i+2)] = services[i].startDate
+        ws['F' + str(i+2)] = services[i].flightConnectionNumber
+        ws['G' + str(i+2)] = services[i].paxName
+        ws['H' + str(i+2)] = services[i].paxReservationNumber
+        ws['I' + str(i+2)] = services[i].startZone
+        ws['J' + str(i+2)] = services[i].endZone
+        ws['K' + str(i+2)] = services[i].connectionGate
+        ws['L' + str(i+2)] = services[i].serviceType
+        ws['M' + str(i+2)] = services[i].reserved
+        ws['N' + str(i+2)] = services[i].authorizedBy
 
 
     return wb
