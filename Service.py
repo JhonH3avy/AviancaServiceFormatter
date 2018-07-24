@@ -4,47 +4,40 @@ class Service(object):
     """Flight object to be inserted in database"""
     def __init__(self, fields = []):
         self.airline = 'AVA'
-        if isinstance(fields[0].value, str) and  isinstance(fields[3].value, str):
-            self.flightNumber = fields[0].value + fields[3].value
+        if isinstance(fields['carrier'], str) and  isinstance(fields['flightNumber'], str):
+            self.flightNumber = fields['carrier'] + fields['flightNumber']
         else:
             self.flightNumber = None
-        if isinstance(fields[1], str):
-            self.origin = fields[1]
-            self.destination = fields[2].value
-        else:
-            self.origin = fields[1].value
-            self.destination = fields[2]
+        self.origin = fields['origin']
+        self.destination = fields['destination']
         if self.origin == 'BOG':
-            if fields[4].value:
-                self.startDate = arrow.get(fields[4].value, 'America/Bogota').to('utc').format('YYYY-MM-DD HH:mm') 
+            if fields['departure']:
+                self.startDate = arrow.get(fields['departure'], 'America/Bogota').to('utc').format('YYYY-MM-DD HH:mm') 
             else:
                 self.startDate = None
             self.startZone = 'MODULOS'
             self.endZone = 'SALAS'
         else:
-            if fields[5].value:
-                self.startDate = arrow.get(fields[5].value, 'America/Bogota').to('utc').format('YYYY-MM-DD HH:mm')            
+            if fields['arrival']:
+                self.startDate = arrow.get(fields['arrival'], 'America/Bogota').to('utc').format('YYYY-MM-DD HH:mm')            
             else:
                 self.startDate = None
             self.startZone = 'GATE'
             self.endZone = 'SALIDA'
-        self.paxName = fields[6].value
+        self.paxName = fields['paxName']
         self.serviceType = None
-        if fields[8].value:
+        if 'WCOB' in fields.keys() and fields['WCOB']:
             self.serviceType = 'WCOB'
-        elif fields[9].value:
+        elif 'WCMP' in fields.keys() and fields['WCMP']:
             self.serviceType = 'WCMP'
-        elif fields[10].value:
+        elif 'WCHS' in fields.keys() and fields['WCHS']:
             self.serviceType = 'WCHS'
-        elif fields[12].value:
+        elif 'WCHC' in fields.keys() and fields['WCHC']:
             self.serviceType = 'WCHC'
-        elif fields[11].value:
+        elif 'WCHR' in fields.keys() and fields['WCHR']:
             self.serviceType = 'WCHR'
-        try:
-            if self.serviceType is None and fields[13].value:
-                self.serviceType = 'WCBW'
-        except IndexError:
-            print('No WCBW Column for this service')
+        elif 'WCBW' in fields.keys() and fields['WCBW']:
+            self.serviceType = 'WCBW'
         self.flightConnectionNumber = ''
         self.paxReservationNumber = ''
         self.connectionGate = ''
@@ -66,6 +59,10 @@ class Service(object):
         if not self.destination:
             return False
         return True
+
+
+    def is_arriving(self):
+        return self.destination == 'BOG'
 
 
 

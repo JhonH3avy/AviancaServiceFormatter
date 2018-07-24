@@ -75,7 +75,9 @@ def process_sheet(sheet, workbook, services = []):
         print(sheet + ' is not a valid sheet name.')
         return services
 
-    sheet_ranges = workbook[sheet]    
+    sheet_ranges = workbook[sheet]
+    
+    columnDict = get_columns_index(sheet_ranges)
 
     try:
         assert sheet_ranges['A5'].value is not None
@@ -88,7 +90,7 @@ def process_sheet(sheet, workbook, services = []):
     origin = ''
     destination = ''
 
-    if "ORG" in localData[0]:
+    if 'ORG' in localData[0]:
         origin = localData[1].strip()
     else:
         destination = localData[1].strip()
@@ -98,20 +100,30 @@ def process_sheet(sheet, workbook, services = []):
     max_row = sheet_ranges.rows.gi_frame.f_locals['max_row']
 
     for row in sheet_ranges.iter_rows(min_row=9, max_col=max_col, max_row=max_row):
-        fields = []
-        for cell in row:
-            fields.append(cell) 
-            
+        fields = {}
+        for cell in row: 
+            if hasattr(cell,'column') and  cell.column in columnDict.keys():
+                fields[columnDict[cell.column]] = cell.value
+            else:
+                continue
+        
+        if len(fields) == 0:
+            continue
+
         if origin:
-            fields.insert(1,origin)
+            fields['origin'] = origin
         else:
-            fields.insert(2,destination)
+            fields['destination'] = destination
+
         service = Service(fields)
         if service.is_valid_service():
             result = [serviceToFilter for serviceToFilter in services if service.paxName == serviceToFilter.paxName]
             if result:
                 indx = services.index(result[0])
-                service_with_connection = put_in_connection_of_service(service, services[indx])
+                if result[0].is_arriving():
+                    service_with_connection = put_in_connection_of_service(services[indx], service)
+                else:
+                    service_with_connection = put_in_connection_of_service(service, services[indx])
                 services.remove(result[0])
                 services.append(service_with_connection)
             else:
@@ -125,11 +137,42 @@ def process_sheet(sheet, workbook, services = []):
 def is_valid_sheet_name(sheetName):
     keys = ['SALIDAS', 'SALIENDO', 'LLEGADAS', 'LLEGANDO']
     for key in keys:
-        if key in sheetName:
+        if key in sheetName.upper():
             return True
     return False
             
 
+def get_columns_index(sheet_ranges):
+    columnIdx = {}
+    max_col = sheet_ranges.rows.gi_frame.f_locals['max_col']
+    for i in range(7,9):
+        for j in range(1,(max_col+1)):
+            cell = sheet_ranges.cell(row=i, column=j)
+            columnName = get_dict_equivalent(cell.value)
+            if columnName:
+                columnIdx[j] = columnName
+    return columnIdx
+
+def get_dict_equivalent(columnName):
+    dict = {
+        'SSR_SCARR':'carrier',
+        'SSR_SORG':'origin',
+        'SSR_SDST':'destination',
+        'SSR_FTNR':'flightNumber',
+        'SSR_DEPDATE':'departure',
+        'SSR_ARRDATE':'arrival',
+        'SSR_PAXNAME':'paxName',
+        'WCOB':'WCOB',
+        'WCMP':'WCMP',
+        'WCHS':'WCHS',
+        'WCHR':'WCHR',
+        'WCHC':'WCHC',
+        'WCBW':'WCBW'
+    }
+    if columnName in dict.keys():
+        return dict[columnName]
+    else:
+        return None   
 
 
 def put_in_connection_of_service(service, connection):

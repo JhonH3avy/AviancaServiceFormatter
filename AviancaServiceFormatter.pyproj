@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <InterpreterId>Global|PythonCore|3.6</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-p "C:\Users\JhonRContreras\Documents\WCHR 19 JUL 10AM.xlsx" -o "C:\Users\JhonRContreras\Documents\services.xlsx"</CommandLineArguments>
+    <CommandLineArguments>-p "C:\Users\JhonRContreras\Documents\WCHR 24 JULIO AM.xlsx" -o "C:\Users\JhonRContreras\Documents\services.xlsx"</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
