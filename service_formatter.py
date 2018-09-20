@@ -163,8 +163,7 @@ def get_dict_equivalent(columnName):
         'WCHS':'WCHS',
         'WCHR':'WCHR',
         'WCHC':'WCHC',
-        'WCBW':'WCBW',
-        'WEAP':'WEAP'
+        'WCBW':'WCBW'
     }
     if columnName in dict.keys():
         return dict[columnName]

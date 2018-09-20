@@ -38,8 +38,6 @@ class Service(object):
             self.serviceType = 'WCHR'
         elif 'WCBW' in fields.keys() and fields['WCBW']:
             self.serviceType = 'WCBW'
-        elif 'WEAP' in fields.keys() and fields['WEAP']:
-            self.serviceType = 'WEAP'
         self.flightConnectionNumber = ''
         self.paxReservationNumber = ''
         self.connectionGate = ''
