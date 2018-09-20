@@ -1,7 +1,3 @@
-"""
-A sample for working with the Pyvot library for Excel.
-"""
-
 from os import path
 from openpyxl import load_workbook
 from Service import Service
@@ -167,7 +163,8 @@ def get_dict_equivalent(columnName):
         'WCHS':'WCHS',
         'WCHR':'WCHR',
         'WCHC':'WCHC',
-        'WCBW':'WCBW'
+        'WCBW':'WCBW',
+        'WEAP':'WEAP'
     }
     if columnName in dict.keys():
         return dict[columnName]
