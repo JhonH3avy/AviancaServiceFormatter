@@ -7,6 +7,7 @@ from openpyxl import load_workbook
 from Service import Service
 import services_to_excel
 import sys
+from copy import copy
 
 OK = 0
 FILE_LOADING_ERROR = 1
@@ -64,7 +65,6 @@ def main():
         print('Program do not have permission to access ' + output_path)
         sys.exit(FILE_ACCESS_PERMISSION_ERROR)
     print('Job Done...')
-    sys.exit(OK)    
 
 
 
@@ -120,12 +120,12 @@ def process_sheet(sheet, workbook, services = []):
             result = [serviceToFilter for serviceToFilter in services if service.paxName == serviceToFilter.paxName]
             if result:
                 indx = services.index(result[0])
-                if result[0].is_arriving():
-                    service_with_connection = put_in_connection_of_service(services[indx], service)
-                else:
-                    service_with_connection = put_in_connection_of_service(service, services[indx])
+                previous_service = services[indx]
                 services.remove(result[0])
-                services.append(service_with_connection)
+                existing_service = put_in_connection_of_service(previous_service, service)
+                services.append(existing_service)
+                current_service = put_in_connection_of_service(service, previous_service)
+                services.append(current_service)
             else:
                 services.append(service)
         
@@ -175,9 +175,14 @@ def get_dict_equivalent(columnName):
         return None   
 
 
-def put_in_connection_of_service(service, connection):
-    service.flightConnectionNumber = connection.flightNumber
-    service.endZone = 'SALAS'
+def put_in_connection_of_service(serviceA, serviceB):
+    service = copy(serviceA)
+    service.flightConnectionNumber = serviceB.flightNumber
+    if service.is_arriving():
+        service.endZone = 'SALAS'
+    else:
+        service.startZone = 'SALAS'
+        service.endZone = 'GATE'
     return service
 
 
