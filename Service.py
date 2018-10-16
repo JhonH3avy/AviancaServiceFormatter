@@ -12,14 +12,14 @@ class Service(object):
         self.destination = fields['destination']
         if self.origin == 'BOG':
             if fields['departure']:
-                self.startDate = arrow.get(fields['departure'], 'America/Bogota').to('utc').format('YYYY-MM-DD HH:mm') 
+                self.startDate = arrow.get(fields['departure'], 'America/Bogota').format('YYYY-MM-DD HH:mm') #isostring() alternative
             else:
                 self.startDate = None
             self.startZone = 'MODULOS'
             self.endZone = 'SALAS'
         else:
             if fields['arrival']:
-                self.startDate = arrow.get(fields['arrival'], 'America/Bogota').to('utc').format('YYYY-MM-DD HH:mm')            
+                self.startDate = arrow.get(fields['arrival'], 'America/Bogota').format('YYYY-MM-DD HH:mm') #isostring() alternative
             else:
                 self.startDate = None
             self.startZone = 'GATE'
